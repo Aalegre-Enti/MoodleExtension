@@ -1,0 +1,27 @@
+{
+  "name": "Moodle Admin Extension",
+  "description": "Test",
+  "version": "1.0",
+  "manifest_version": 3,
+  "action": {
+    "default_popup": "init.html",
+    "default_icon": "icon.webp"
+  },
+  "permissions": [
+    "storage"
+  ],
+  "content_scripts": [
+    {
+      "js": ["jquery.min.js","grade-edit-tree-index.js", "data.js"],
+      "matches": [
+        "https://campus.enti.cat/grade/edit/tree/index.php*"
+      ]
+    },
+    {
+      "js": ["jquery.min.js","grade-edit-tree-category.js", "data.js"],
+      "matches": [
+        "https://campus.enti.cat/grade/edit/tree/category.php*"
+      ]
+    }
+  ]
+}
