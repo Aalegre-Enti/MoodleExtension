@@ -9,6 +9,17 @@ class GradeCategory{
         this.minGradeToPass = minGradeToPass;
         this.children = [];
     }
+    get internalId() {
+        var intId = "";
+        if(this.parent != undefined && this.parent != null){
+            var index = this.parent.children.indexOf(this);
+            intId = this.parent.internalId + "_" + index;
+        }
+        else{
+            intId = "0";
+        }
+        return intId;
+    }
     validate(){
         if(this.children.length > 0){
             for(var i = 0; i < this.children.length; i++){
@@ -16,6 +27,7 @@ class GradeCategory{
                     this.children[i] = Object.assign(new GradeCategory(), this.children[i]);
                     this.children[i].parent = this;
                 }
+                this.children[i].validate();
             }
         }
     }
@@ -25,7 +37,19 @@ class GradeCategory{
         return childCategory;
     }
     createChild(){
-        return this.addChild(new GradeCategory(this, this.id + "_" + this.children.length, this.id + "_" + this.children.length, null, true, 10));
+        var newCat = new GradeCategory(this, this.id + "_" + this.children.length, this.id + "_" + this.children.length, null, true, 10);
+
+        if(this.children.length > 0){
+            var lastChild = this.children[this.children.length - 1];
+            var lastNumber = parseInt(lastChild.id.substr(-1));
+            if(Number.isInteger(lastNumber)){
+                lastNumber++;
+                var name = lastChild.id.slice(0,-1) + lastNumber;
+                newCat.id = name;
+                newCat.name = name;
+            }
+        }
+        return this.addChild(newCat);
     }
     AppendCategory(parent){
         var container = $('<div class="ps-4">').appendTo(parent);
@@ -38,29 +62,39 @@ class GradeCategory{
     }
     AddCategoryControls(parent){
         var group = $('<div class="input-group input-group-sm mb-1"></div>').appendTo(parent);
-        this.AddTextFloating(group, this.id, "Name", this.name);
-        this.AddTextFloating(group, this.id, "Id", this.id);
-        this.AddTextFloating(group, this.id, "%", this.percent);
-        this.AddTextFloating(group, this.id, "Max", this.mamGrade);
-        var check = $('<div class="input-group-text"></div>').appendTo(group);
-        if(typeof FindCategoryInGradebook != "undefined"){
-            $('<input class="form-check-input mt-0" type="checkbox" value="" disabled>').appendTo(check);
-        }
-        $('<button class="btn btn-sm btn-outline-success" type="button" id="' + this.id + '_Add">Add</button>').appendTo(group).on( "click", function(e) {
-            AddCategory(FindCategoryById($(e.target).attr("id").replace("_Add", "")));
+        var intId = this.internalId;
+        $('<div class="input-group-text">' + intId +'</div>').appendTo(group);
+        this.AddTextFloating(group, this.id + "_Name", "Name", this.name);
+        this.AddTextFloating(group, this.id + "_Id", "Id", this.id);
+        this.AddTextFloating(group, this.id + "_Perc", "%", this.percent);
+        this.AddTextFloating(group, this.id + "_Max", "Max", this.maxGrade);
+        $('<button class="btn btn-sm btn-outline-success small" type="button" title="Add new child" id="' + intId + '_Add">+</button>').appendTo(group).on( "click", function(e) {
+            AddCategory(FindCategoryByInternalId($(e.target).attr("id").replace("_Add", "")));
+            ReloadCategories();
+        } );
+        $('<button class="btn btn-sm btn-outline-danger small" type="button" title="Delete" id="' + intId + '_Remove">-</button>').appendTo(group).on( "click", function(e) {
+            RemoveCategory(FindCategoryByInternalId($(e.target).attr("id").replace("_Remove", "")));
             ReloadCategories();
         } );
         if(this.parent != null && this.parent != undefined){
-            $('<button class="btn btn-sm btn-outline-danger" type="button" id="' + this.id + '_Remove">Remove</button>').appendTo(group).on( "click", function(e) {
-                RemoveCategory(FindCategoryById($(e.target).attr("id").replace("_Remove", "")));
+            $('<button class="btn btn-sm btn-outline-secondary small" type="button" title="Order up" id="' + intId + '_Up">↑</button>').appendTo(group).on( "click", function(e) {
+                MoveCategory(FindCategoryByInternalId($(e.target).attr("id").replace("_Up", "")),-1);
+                ReloadCategories();
+            } );
+            $('<button class="btn btn-sm btn-outline-secondary small" type="button" title="Order down" id="' + intId + '_Down">↓</button>').appendTo(group).on( "click", function(e) {
+                MoveCategory(FindCategoryByInternalId($(e.target).attr("id").replace("_Down", "")),1);
+                ReloadCategories();
+            } );
+            $('<button class="btn btn-sm btn-outline-secondary small" type="button" title="Move to parent" id="' + intId + '_Parent">↰</button>').appendTo(group).on( "click", function(e) {
+                ChangeParentCategory(FindCategoryByInternalId($(e.target).attr("id").replace("_Parent", "")));
                 ReloadCategories();
             } );
         }
     }
     AddTextFloating(parent, id, name, value){
         if(value == undefined || value == null){
-        return $('<div class="form-floating"> <input type="text" class="form-control form-control-sm" id="' + id + '" placeholder="' + name + '"> <label for="' + id + '">' + name + '</label> </div>').appendTo(parent);
+        return $('<input type="text" class="form-control form-control-sm py-1" style="max-height:2rem;min-height:2rem;height:2rem;" id="' + id + '" placeholder="' + name + '" title="' + name + '">').appendTo(parent);
         }
-        return $('<div class="form-floating"> <input type="text" class="form-control form-control-sm" id="' + id + '" placeholder="' + name + '" value="' + value + '"> <label for="' + id + '">' + name + '</label> </div>').appendTo(parent);
+        return $('<input type="text" class="form-control form-control-sm py-1" style="max-height:2rem;min-height:2rem;height:2rem;" id="' + id + '" placeholder="' + name + '" title="' + name + '" value="' + value + '">').appendTo(parent);
     }
 }

@@ -28,7 +28,22 @@ $( document ).ready(function() {
     var value = $("#id_parentcategory option:contains('"+ parent +"')").val();
     $('#id_parentcategory').val(value)
     var ID = params.get("ID");
-    $("#id_grade_item_idnumber").val(ID);
+    if(ID != "undefined" && ID != null && ID.length > 0)
+        $("#id_grade_item_idnumber").val(ID);
     var Name = params.get("Name");
-    $("#id_fullname").val(Name);
+    if(Name != "undefined" && Name != null && Name.length > 0)
+        $("#id_fullname").val(Name);
+    var MaxGrade = params.get("MaxGrade");
+    if(MaxGrade != "undefined" && MaxGrade != null && MaxGrade.length > 0)
+        $("#id_grade_item_grademax").val(MaxGrade);
+    else
+        $("#id_grade_item_grademax").val(10);
+    var MinGrade = params.get("MinGrade");
+    if(MinGrade != "undefined" && MinGrade != null && MinGrade.length > 0)
+        $("#id_grade_item_grademin").val(MinGrade);
+    else
+        $("#id_grade_item_grademin").val(0);
+    var PassGrade = params.get("PassGrade");
+    if(PassGrade != "undefined" && PassGrade != null && PassGrade.length > 0)
+        $("#id_grade_item_gradepass").val(PassGrade);
 });
