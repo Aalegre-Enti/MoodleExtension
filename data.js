@@ -7,6 +7,8 @@ class GradeCategory{
         this.visible = visible;
         this.maxGrade = maxGrade;
         this.minGradeToPass = minGradeToPass;
+        this.categoryHeader = null;
+        this.moodleId = null;
         this.children = [];
     }
     get internalId() {
@@ -23,7 +25,7 @@ class GradeCategory{
     validate(){
         if(this.children.length > 0){
             for(var i = 0; i < this.children.length; i++){
-                if(typeof this.children[i].AppendCategory == "undefined"){
+                if(typeof this.children[i].validate == "undefined"){
                     this.children[i] = Object.assign(new GradeCategory(), this.children[i]);
                     this.children[i].parent = this;
                 }
@@ -51,6 +53,16 @@ class GradeCategory{
         }
         return this.addChild(newCat);
     }
+    update(){
+        var intId = this.internalId;
+        this.name = $("#" + intId + "_Name").val();
+        this.id = $("#" + intId + "_Id").val();
+        this.percent = $("#" + intId + "_Perc").val();
+        this.max = $("#" + intId + "_Max").val();
+        for(var i = 0; i < this.children.length; i++){
+            this.children[i].update();
+        }
+    }
     AppendCategory(parent){
         var container = $('<div class="ps-4">').appendTo(parent);
         this.AddCategoryControls(container);
@@ -63,11 +75,17 @@ class GradeCategory{
     AddCategoryControls(parent){
         var group = $('<div class="input-group input-group-sm mb-1"></div>').appendTo(parent);
         var intId = this.internalId;
-        $('<div class="input-group-text">' + intId +'</div>').appendTo(group);
-        this.AddTextFloating(group, this.id + "_Name", "Name", this.name);
-        this.AddTextFloating(group, this.id + "_Id", "Id", this.id);
-        this.AddTextFloating(group, this.id + "_Perc", "%", this.percent);
-        this.AddTextFloating(group, this.id + "_Max", "Max", this.maxGrade);
+        var created = "";
+        if(this.categoryHeader === undefined){
+            created = "bg-danger-subtle";
+        }else if(this.categoryHeader !== null){
+            created = "bg-success-subtle";
+        }
+        $('<div class="input-group-text ' + created + '">' + intId +'</div>').appendTo(group);
+        this.AddTextFloating(group, intId + "_Name", "Name", this.name);
+        this.AddTextFloating(group, intId + "_Id", "Id", this.id);
+        this.AddTextFloating(group, intId + "_Perc", "%", this.percent);
+        this.AddTextFloating(group, intId + "_Max", "Max", this.maxGrade);
         $('<button class="btn btn-sm btn-outline-success small" type="button" title="Add new child" id="' + intId + '_Add">+</button>').appendTo(group).on( "click", function(e) {
             AddCategory(FindCategoryByInternalId($(e.target).attr("id").replace("_Add", "")));
             ReloadCategories();
@@ -97,4 +115,8 @@ class GradeCategory{
         }
         return $('<input type="text" class="form-control form-control-sm py-1" style="max-height:2rem;min-height:2rem;height:2rem;" id="' + id + '" placeholder="' + name + '" title="' + name + '" value="' + value + '">').appendTo(parent);
     }
+}
+
+class GradeItem{
+
 }

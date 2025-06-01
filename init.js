@@ -3,6 +3,11 @@ var topCategory;
 $( document ).ready(function() {
     LoadSettings();
     SkipRecalculatingGrades_Checkbox.addEventListener("change", SaveSettings);
+    GenerateUnica_Checkbox.addEventListener("change", SaveSettings);
+    AutoGenerateCategories_Checkbox.addEventListener("change", SaveSettings);
+    AutoDeleteCategories_Checkbox.addEventListener("change", SaveSettings);
+    AutoMoveItems_Checkbox.addEventListener("change", SaveSettings);
+    CategoriesUpdate_Button.addEventListener("click", UpdateCategories);
 
     
 });
@@ -16,6 +21,12 @@ $( document ).ready(function() {
         });
         chrome.storage.sync.get('GenerateUnica_Checkbox_Value', function(data) {
             GenerateUnica_Checkbox.checked = data.GenerateUnica_Checkbox_Value;
+        });
+        chrome.storage.sync.get('AutoDeleteCategories_Checkbox_Value', function(data) {
+            AutoDeleteCategories_Checkbox.checked = data.AutoDeleteCategories_Checkbox_Value;
+        });
+        chrome.storage.sync.get('AutoMoveItems_Checkbox_Value', function(data) {
+            AutoMoveItems_Checkbox.checked = data.AutoMoveItems_Checkbox_Value;
         });
         chrome.storage.sync.get('TopCategory', function(data) {
             topCategory = Object.assign(new GradeCategory(), data.TopCategory);
@@ -83,6 +94,7 @@ $( document ).ready(function() {
             if(topCategory.id == undefined){
                 topCategory = new GradeCategory(null, "Grade category", "ID", null, true, 10, 5);
                 if(GenerateUnica_Checkbox.checked){
+                  topCategory.addChild(new GradeCategory(top, "No Evaluable", "NE", 0, false, 0));
                   var av = topCategory.addChild(new GradeCategory(top, "Avaluació", "AV", null, true, 10, 5));
                   var avc = av.addChild(new GradeCategory(top, "Avaluació Contínua", "AV-C", 100, true, 10));
                   avc.addChild(new GradeCategory(top, "AA1", "AA1", 100, true, 10));
@@ -94,6 +106,7 @@ $( document ).ready(function() {
                   var rvu = rv.addChild(new GradeCategory(top, "Reavaluació Única", "RV-U", 100, true, 10));
                   rvu.addChild(new GradeCategory(top, "ARU1", "ARU1", 100, true, 10));
                 }else{
+                  topCategory.addChild(new GradeCategory(top, "No Evaluable", "NE", 0, false, 0));
                   var av = topCategory.addChild(new GradeCategory(top, "Avaluació", "AV", null, true, 10, 5));
                   av.addChild(new GradeCategory(top, "AA1", "AA1", 100, true, 10))
                   var rv = topCategory.addChild(new GradeCategory(top, "Reavaluació", "RV", null, true, 10, 5));
@@ -106,11 +119,17 @@ $( document ).ready(function() {
             $(CategoriesBody).empty();
             topCategory.AppendCategory(CategoriesBody);
       }
+      function UpdateCategories(){
+        topCategory.update();
+        SaveSettings();
+      }
       function SaveSettings(){
         console.log("Saving settings");
         chrome.storage.sync.set({ SkipRecalculatingGrades_Checkbox_Value: SkipRecalculatingGrades_Checkbox.checked });
         chrome.storage.sync.set({ AutoGenerateCategories_Checkbox_Value: AutoGenerateCategories_Checkbox.checked });
         chrome.storage.sync.set({ GenerateUnica_Checkbox_Value: GenerateUnica_Checkbox.checked });
+        chrome.storage.sync.set({ AutoDeleteCategories_Checkbox_Value: AutoDeleteCategories_Checkbox.checked });
+        chrome.storage.sync.set({ AutoMoveItems_Checkbox_Value: AutoMoveItems_Checkbox.checked });
         chrome.storage.sync.set({ TopCategory: topCategory });
         ReloadCategories();
         console.log("Saved settings");
