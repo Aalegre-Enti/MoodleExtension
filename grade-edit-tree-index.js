@@ -89,7 +89,7 @@ function MoveGradeItems(category){
     var items = [];
     var name = category.id.normalize("NFD").replace(/[\u0300-\u036f]/g,"");
     $(gradeItemHeaders).each(function(i){
-         if($(this).text().normalize("NFD").replace(/[\u0300-\u036f]/g,"").startsWith(name)){
+         if($(this).text().normalize("NFD").replace(/[\u0300-\u036f]/g,"").contains(name)){
             try{
                 var parentcat = $(this).parents("tr.item").attr("data-parent-category").replace("cg", "");
                 if(category.moodleId != parentcat){

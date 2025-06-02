@@ -15,7 +15,7 @@ class GradeCategory{
         var intId = "";
         if(this.parent != undefined && this.parent != null){
             var index = this.parent.children.indexOf(this);
-            intId = this.parent.internalId + "_" + index;
+            intId = this.parent.internalId + "-" + index;
         }
         else{
             intId = "0";
