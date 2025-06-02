@@ -3,7 +3,7 @@ var categoriesHeaders;
 var gradeItemHeaders;
 $( document ).ready(function() {
         categoriesHeaders = $("tr.category .rowtitle");
-        gradeItemHeaders = $("tr.item a.gradeitemheader ");
+        gradeItemHeaders = $("tr.item .rowtitle .gradeitemheader ");
         LoadSettings();
         $(categoriesHeaders).each(function(i){
             var lastcol = $(this).parents("tr").find("td").last().find(".dropdown");
@@ -90,13 +90,15 @@ function MoveGradeItems(category){
     var name = category.id.normalize("NFD").replace(/[\u0300-\u036f]/g,"");
     $(gradeItemHeaders).each(function(i){
          if($(this).text().normalize("NFD").replace(/[\u0300-\u036f]/g,"").startsWith(name)){
-            var parentcat = $(this).parents("tr.item").attr("data-parent-category").replace("cg", "");
-            if(category.moodleId != parentcat){
-                items.push(this);
-                var check = $(this).parents("tr.item").find("input:checkbox");
-                $(check).prop( "checked", false);
-                $(check).trigger("click");
-            }
+            try{
+                var parentcat = $(this).parents("tr.item").attr("data-parent-category").replace("cg", "");
+                if(category.moodleId != parentcat){
+                    items.push(this);
+                    var check = $(this).parents("tr.item").find("input:checkbox");
+                    $(check).prop( "checked", false);
+                    $(check).trigger("click");
+                }
+            }catch (ex){ }
          }
     });
     if(items.length > 0){
