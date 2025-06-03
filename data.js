@@ -39,7 +39,7 @@ class GradeCategory{
         return childCategory;
     }
     createChild(){
-        var newCat = new GradeCategory(this, this.id + "_" + this.children.length, this.id + "_" + this.children.length, null, true, 10);
+        var newCat = new GradeCategory(this, this.id + "-" + this.children.length, this.id + "-" + this.children.length, null, true, 10);
 
         if(this.children.length > 0){
             var lastChild = this.children[this.children.length - 1];
