@@ -87,28 +87,28 @@ class GradeCategory{
         this.AddTextFloating(group, intId + "_Perc", "%", this.percent);
         this.AddTextFloating(group, intId + "_Max", "Max", this.maxGrade);
         $('<button class="btn btn-sm btn-outline-success small" type="button" title="Add new child" id="' + intId + '_Add">+</button>').appendTo(group).on( "click", function(e) {
-            SaveSettings();
+            UpdateCategories();
             AddCategory(FindCategoryByInternalId($(e.target).attr("id").replace("_Add", "")));
             ReloadCategories();
         } );
         $('<button class="btn btn-sm btn-outline-danger small" type="button" title="Delete" id="' + intId + '_Remove">-</button>').appendTo(group).on( "click", function(e) {
-            SaveSettings();
+            UpdateCategories();
             RemoveCategory(FindCategoryByInternalId($(e.target).attr("id").replace("_Remove", "")));
             ReloadCategories();
         } );
         if(this.parent != null && this.parent != undefined){
             $('<button class="btn btn-sm btn-outline-secondary small" type="button" title="Order up" id="' + intId + '_Up">↑</button>').appendTo(group).on( "click", function(e) {
-                SaveSettings();
+                UpdateCategories();
                 MoveCategory(FindCategoryByInternalId($(e.target).attr("id").replace("_Up", "")),-1);
                 ReloadCategories();
             } );
             $('<button class="btn btn-sm btn-outline-secondary small" type="button" title="Order down" id="' + intId + '_Down">↓</button>').appendTo(group).on( "click", function(e) {
-                SaveSettings();
+                UpdateCategories();
                 MoveCategory(FindCategoryByInternalId($(e.target).attr("id").replace("_Down", "")),1);
                 ReloadCategories();
             } );
             $('<button class="btn btn-sm btn-outline-secondary small" type="button" title="Move to parent" id="' + intId + '_Parent">↰</button>').appendTo(group).on( "click", function(e) {
-                SaveSettings();
+                UpdateCategories();
                 ChangeParentCategory(FindCategoryByInternalId($(e.target).attr("id").replace("_Parent", "")));
                 ReloadCategories();
             } );
