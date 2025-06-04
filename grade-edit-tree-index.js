@@ -1,8 +1,10 @@
 
 var categoriesHeaders;
+var categoriesFooters;
 var gradeItemHeaders;
 $( document ).ready(function() {
         categoriesHeaders = $("tr.category .rowtitle");
+        categoriesFooters = $("tr.categoryitem.item .column-actions .dropdown");
         gradeItemHeaders = $("tr.item .rowtitle .gradeitemheader ");
         LoadSettings();
         $(categoriesHeaders).each(function(i){
@@ -12,6 +14,11 @@ $( document ).ready(function() {
             } );
             $('<button class="btn btn-sm btn-outline-danger" type="button" >Delete</button>').appendTo(lastcol).on( "click", function(e) {
                 DeleteByRow($(e.target).parents("tr"));
+            } );
+        });
+        $(categoriesFooters).each(function(i){
+            $('<button class="btn btn-sm btn-outline-secondary" type="button" >Edit Calc</button>').appendTo(this).on( "click", function(e) {
+                document.location = $(this).parent().find('a.dropdown-item:contains("Edit calculation")').attr("href");
             } );
         });
     setTimeout(function() {
