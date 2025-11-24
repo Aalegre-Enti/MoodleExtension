@@ -49,6 +49,7 @@ function LoadSettings(){
             });
             chrome.storage.sync.get('AutoMoveItems_Checkbox_Value', function(data) {
                 AutoMoveItems = data.AutoMoveItems_Checkbox_Value;
+                debugger;
                 if(AutoMoveItems === true){
                     setTimeout(function() {
                         if(MoveGradeItems(topCategory) == true){
@@ -96,7 +97,8 @@ function MoveGradeItems(category){
     var items = [];
     var name = category.id.normalize("NFD").replace(/[\u0300-\u036f]/g,"");
     $(gradeItemHeaders).each(function(i){
-         if($(this).text().normalize("NFD").replace(/[\u0300-\u036f]/g,"").contains(name)){
+        debugger;
+         if($(this).text().normalize("NFD").replace(/[\u0300-\u036f]/g,"").includes(name)){
             try{
                 var parentcat = $(this).parents("tr.item").attr("data-parent-category").replace("cg", "");
                 if(category.moodleId != parentcat){
