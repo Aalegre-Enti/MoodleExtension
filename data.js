@@ -3,10 +3,10 @@ class GradeCategory{
         this.parent = parent;
         this.name = name;
         this.id = id;
-        this.percent = percent;
-        this.visible = visible;
-        this.maxGrade = maxGrade;
-        this.minGradeToPass = minGradeToPass;
+        //this.percent = percent;
+        //this.visible = visible;
+        //this.maxGrade = maxGrade;
+        //this.minGradeToPass = minGradeToPass;
         this.categoryHeader = null;
         this.moodleId = null;
         this.children = [];
@@ -57,8 +57,8 @@ class GradeCategory{
         var intId = this.internalId;
         this.name = $("#" + intId + "_Name").val();
         this.id = $("#" + intId + "_Id").val();
-        this.percent = $("#" + intId + "_Perc").val();
-        this.max = $("#" + intId + "_Max").val();
+        //this.percent = $("#" + intId + "_Perc").val();
+        //this.max = $("#" + intId + "_Max").val();
         for(var i = 0; i < this.children.length; i++){
             this.children[i].update();
         }
@@ -84,8 +84,8 @@ class GradeCategory{
         $('<div class="input-group-text ' + created + '">' + intId +'</div>').appendTo(group);
         this.AddTextFloating(group, intId + "_Name", "Name", this.name);
         this.AddTextFloating(group, intId + "_Id", "Id", this.id);
-        this.AddTextFloating(group, intId + "_Perc", "%", this.percent);
-        this.AddTextFloating(group, intId + "_Max", "Max", this.maxGrade);
+        //this.AddTextFloating(group, intId + "_Perc", "%", this.percent);
+        //this.AddTextFloating(group, intId + "_Max", "Max", this.maxGrade);
         $('<button class="btn btn-sm btn-outline-success small" type="button" title="Add new child" id="' + intId + '_Add">+</button>').appendTo(group).on( "click", function(e) {
             UpdateCategories();
             AddCategory(FindCategoryByInternalId($(e.target).attr("id").replace("_Add", "")));
