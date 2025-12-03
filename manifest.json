@@ -22,6 +22,12 @@
       "matches": [
         "https://campus.enti.cat/grade/edit/tree/category.php*"
       ]
+    },
+    {
+      "js": ["jquery.min.js","grade-edit-tree-calculation.js", "data.js"],
+      "matches": [
+        "https://campus.enti.cat/grade/edit/tree/calculation.php*"
+      ]
     }
   ]
 }
