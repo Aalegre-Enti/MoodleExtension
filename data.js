@@ -11,6 +11,9 @@ class GradeCategory{
         this.moodleId = null;
         this.children = [];
     }
+    get normalizedId() {
+        return this.id != undefined ? this.id.normalize("NFD").replace(/[\u0300-\u036f]/g,"") : undefined;
+    }
     get internalId() {
         var intId = "";
         if(this.parent != undefined && this.parent != null){

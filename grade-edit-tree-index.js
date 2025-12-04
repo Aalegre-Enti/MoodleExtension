@@ -28,6 +28,7 @@ var SkipRecalculatingGrades = false;
 var AutoGenerateCategories = false;
 var AutoMoveItems = false;
 var topCategory;
+var categoryList = [];
 function LoadSettings(){
     console.log("Loading settings");
     chrome.storage.sync.get('SkipRecalculatingGrades_Checkbox_Value', function(data) {
@@ -37,30 +38,44 @@ function LoadSettings(){
                 topCategory = Object.assign(new GradeCategory(), data.TopCategory);
                 topCategory.validate();
                 EnhanceGradebook();
+                LoadCategories(topCategory);
+                categoryList = categoryList.reverse();
                 chrome.storage.sync.get('AutoGenerateCategories_Checkbox_Value', function(data) {
                     AutoGenerateCategories = data.AutoGenerateCategories_Checkbox_Value;
                     if(AutoGenerateCategories === true){
                         if(CreateCategory(topCategory) == true){
                             AutoGenerateCategories = false;
                             chrome.storage.sync.set({ AutoGenerateCategories_Checkbox_Value: AutoGenerateCategories });
+                            try{
+                                alert("Finished creating categories.");
+                            }catch(ex){}
                         }
                     }
                 });
             });
             chrome.storage.sync.get('AutoMoveItems_Checkbox_Value', function(data) {
                 AutoMoveItems = data.AutoMoveItems_Checkbox_Value;
-                debugger;
                 if(AutoMoveItems === true){
                     setTimeout(function() {
                         if(MoveGradeItems(topCategory) == true){
                             AutoMoveItems = false;
                             chrome.storage.sync.set({ AutoMoveItems_Checkbox_Value: AutoMoveItems });
+                            try{
+                                alert("Finished moving grade items.");
+                            }catch(ex){}
                         }
                     }, 500);
                 }
             });
         }
     });
+}
+function LoadCategories(category)
+{
+    categoryList.push(category);
+    for(var i = 0; i < category.children.length; i++){
+        LoadCategories(category.children[i]);
+    }
 }
 function EnhanceGradebook(){
     EnhanceCategory(topCategory);
@@ -95,21 +110,21 @@ function CreateCategory(category){
 }
 function MoveGradeItems(category){
     var items = [];
-    var name = category.id.normalize("NFD").replace(/[\u0300-\u036f]/g,"");
-    $(gradeItemHeaders).each(function(i){
-        debugger;
-         if($(this).text().normalize("NFD").replace(/[\u0300-\u036f]/g,"").includes(name)){
-            try{
-                var parentcat = $(this).parents("tr.item").attr("data-parent-category").replace("cg", "");
-                if(category.moodleId != parentcat){
-                    items.push(this);
-                    var check = $(this).parents("tr.item").find("input:checkbox");
-                    $(check).prop( "checked", false);
-                    $(check).trigger("click");
-                }
-            }catch (ex){ }
-         }
-    });
+    if(category.children.length == 0)
+        $(gradeItemHeaders).each(function(i){
+            var gradetitle = $(this).text().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
+            if(gradetitle.includes(category.normalizedId)){
+                try{
+                    var parentcat = $(this).parents("tr.item").attr("data-parent-category").replace("cg", "");
+                    if(category.moodleId != parentcat){
+                        items.push(this);
+                        var check = $(this).parents("tr.item").find("input:checkbox");
+                        $(check).prop( "checked", false);
+                        $(check).trigger("click");
+                    }
+                }catch (ex){ }
+            }
+        });
     if(items.length > 0){
         setTimeout(function() {
             debugger;
@@ -121,7 +136,7 @@ function MoveGradeItems(category){
                 $('button[data-action="save"]').click();
                 $('button[data-action="save"]').trigger("click");
             }, 200);
-        }, 100);
+        }, 200);
         return false;
     }else{
         for(var i = 0; i < category.children.length; i++){
