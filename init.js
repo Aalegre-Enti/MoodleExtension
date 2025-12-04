@@ -118,6 +118,7 @@ $( document ).ready(function() {
             }catch(ex){ topCategory.id = undefined; ReloadCategories();}
             $(CategoriesBody).empty();
             topCategory.AppendCategory(CategoriesBody);
+            $(".category-update").on("change", UpdateCategories);
       }
       function UpdateCategories(){
         topCategory.update();

@@ -39,7 +39,7 @@ class GradeCategory{
         return childCategory;
     }
     createChild(){
-        var newCat = new GradeCategory(this, this.id + "-" + this.children.length, this.id + "-" + this.children.length, null, true, 10);
+        var newCat = new GradeCategory(this, this.id + "." + (this.children.length+1), this.id + "." + (this.children.length+1), null, true, 10);
 
         if(this.children.length > 0){
             var lastChild = this.children[this.children.length - 1];
@@ -116,9 +116,9 @@ class GradeCategory{
     }
     AddTextFloating(parent, id, name, value){
         if(value == undefined || value == null){
-        return $('<input type="text" class="form-control form-control-sm py-1" style="max-height:2rem;min-height:2rem;height:2rem;" id="' + id + '" placeholder="' + name + '" title="' + name + '">').appendTo(parent);
+        return $('<input type="text" class="form-control form-control-sm py-1 category-update" style="max-height:2rem;min-height:2rem;height:2rem;" id="' + id + '" placeholder="' + name + '" title="' + name + '">').appendTo(parent);
         }
-        return $('<input type="text" class="form-control form-control-sm py-1" style="max-height:2rem;min-height:2rem;height:2rem;" id="' + id + '" placeholder="' + name + '" title="' + name + '" value="' + value + '">').appendTo(parent);
+        return $('<input type="text" class="form-control form-control-sm py-1 category-update" style="max-height:2rem;min-height:2rem;height:2rem;" id="' + id + '" placeholder="' + name + '" title="' + name + '" value="' + value + '">').appendTo(parent);
     }
 }
 
