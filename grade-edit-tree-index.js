@@ -31,21 +31,21 @@ var topCategory;
 var categoryList = [];
 function LoadSettings(){
     console.log("Loading settings");
-    chrome.storage.sync.get('SkipRecalculatingGrades_Checkbox_Value', function(data) {
+    chrome.storage.local.get('SkipRecalculatingGrades_Checkbox_Value', function(data) {
         SkipRecalculatingGrades = data.SkipRecalculatingGrades_Checkbox_Value;
         if(!SkipRecalculatingGradesFunc()){
-            chrome.storage.sync.get('TopCategory', function(data) {
+            chrome.storage.local.get('TopCategory', function(data) {
                 topCategory = Object.assign(new GradeCategory(), data.TopCategory);
                 topCategory.validate();
                 EnhanceGradebook();
                 LoadCategories(topCategory);
                 categoryList = categoryList.reverse();
-                chrome.storage.sync.get('AutoGenerateCategories_Checkbox_Value', function(data) {
+                chrome.storage.local.get('AutoGenerateCategories_Checkbox_Value', function(data) {
                     AutoGenerateCategories = data.AutoGenerateCategories_Checkbox_Value;
                     if(AutoGenerateCategories === true){
                         if(CreateCategory(topCategory) == true){
                             AutoGenerateCategories = false;
-                            chrome.storage.sync.set({ AutoGenerateCategories_Checkbox_Value: AutoGenerateCategories });
+                            chrome.storage.local.set({ AutoGenerateCategories_Checkbox_Value: AutoGenerateCategories });
                             try{
                                 alert("Finished creating categories.");
                             }catch(ex){}
@@ -53,13 +53,13 @@ function LoadSettings(){
                     }
                 });
             });
-            chrome.storage.sync.get('AutoMoveItems_Checkbox_Value', function(data) {
+            chrome.storage.local.get('AutoMoveItems_Checkbox_Value', function(data) {
                 AutoMoveItems = data.AutoMoveItems_Checkbox_Value;
                 if(AutoMoveItems === true){
                     setTimeout(function() {
                         if(MoveGradeItems(topCategory) == true){
                             AutoMoveItems = false;
-                            chrome.storage.sync.set({ AutoMoveItems_Checkbox_Value: AutoMoveItems });
+                            chrome.storage.local.set({ AutoMoveItems_Checkbox_Value: AutoMoveItems });
                             try{
                                 alert("Finished moving grade items.");
                             }catch(ex){}
@@ -79,7 +79,7 @@ function LoadCategories(category)
 }
 function EnhanceGradebook(){
     EnhanceCategory(topCategory);
-    chrome.storage.sync.set({ TopCategory: topCategory });
+    chrome.storage.local.set({ TopCategory: topCategory });
 }
 function EnhanceCategory(category){
     var categoryHeader = FindCategoryInGradebook(category);

@@ -13,22 +13,22 @@ $( document ).ready(function() {
 });
       function LoadSettings(){
         console.log("Loading settings");
-        chrome.storage.sync.get('SkipRecalculatingGrades_Checkbox_Value', function(data) {
+        chrome.storage.local.get('SkipRecalculatingGrades_Checkbox_Value', function(data) {
             SkipRecalculatingGrades_Checkbox.checked = data.SkipRecalculatingGrades_Checkbox_Value;
         });
-        chrome.storage.sync.get('AutoGenerateCategories_Checkbox_Value', function(data) {
+        chrome.storage.local.get('AutoGenerateCategories_Checkbox_Value', function(data) {
             AutoGenerateCategories_Checkbox.checked = data.AutoGenerateCategories_Checkbox_Value;
         });
-        chrome.storage.sync.get('GenerateUnica_Checkbox_Value', function(data) {
+        chrome.storage.local.get('GenerateUnica_Checkbox_Value', function(data) {
             GenerateUnica_Checkbox.checked = data.GenerateUnica_Checkbox_Value;
         });
-        chrome.storage.sync.get('AutoDeleteCategories_Checkbox_Value', function(data) {
+        chrome.storage.local.get('AutoDeleteCategories_Checkbox_Value', function(data) {
             AutoDeleteCategories_Checkbox.checked = data.AutoDeleteCategories_Checkbox_Value;
         });
-        chrome.storage.sync.get('AutoMoveItems_Checkbox_Value', function(data) {
+        chrome.storage.local.get('AutoMoveItems_Checkbox_Value', function(data) {
             AutoMoveItems_Checkbox.checked = data.AutoMoveItems_Checkbox_Value;
         });
-        chrome.storage.sync.get('TopCategory', function(data) {
+        chrome.storage.local.get('TopCategory', function(data) {
             topCategory = Object.assign(new GradeCategory(), data.TopCategory);
             ReloadCategories();
         });
@@ -126,12 +126,12 @@ $( document ).ready(function() {
       }
       function SaveSettings(){
         console.log("Saving settings");
-        chrome.storage.sync.set({ SkipRecalculatingGrades_Checkbox_Value: SkipRecalculatingGrades_Checkbox.checked });
-        chrome.storage.sync.set({ AutoGenerateCategories_Checkbox_Value: AutoGenerateCategories_Checkbox.checked });
-        chrome.storage.sync.set({ GenerateUnica_Checkbox_Value: GenerateUnica_Checkbox.checked });
-        chrome.storage.sync.set({ AutoDeleteCategories_Checkbox_Value: AutoDeleteCategories_Checkbox.checked });
-        chrome.storage.sync.set({ AutoMoveItems_Checkbox_Value: AutoMoveItems_Checkbox.checked });
-        chrome.storage.sync.set({ TopCategory: topCategory });
+        chrome.storage.local.set({ SkipRecalculatingGrades_Checkbox_Value: SkipRecalculatingGrades_Checkbox.checked });
+        chrome.storage.local.set({ AutoGenerateCategories_Checkbox_Value: AutoGenerateCategories_Checkbox.checked });
+        chrome.storage.local.set({ GenerateUnica_Checkbox_Value: GenerateUnica_Checkbox.checked });
+        chrome.storage.local.set({ AutoDeleteCategories_Checkbox_Value: AutoDeleteCategories_Checkbox.checked });
+        chrome.storage.local.set({ AutoMoveItems_Checkbox_Value: AutoMoveItems_Checkbox.checked });
+        chrome.storage.local.set({ TopCategory: topCategory });
         ReloadCategories();
         console.log("Saved settings");
       }

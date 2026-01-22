@@ -3,7 +3,7 @@ var SkipRecalculatingGrades = false;
 var topCategory;
 function LoadSettings(){
     console.log("Loading settings");
-    chrome.storage.sync.get('SkipRecalculatingGrades_Checkbox_Value', function(data) {
+    chrome.storage.local.get('SkipRecalculatingGrades_Checkbox_Value', function(data) {
         SkipRecalculatingGrades = data.SkipRecalculatingGrades_Checkbox_Value;
         SkipRecalculatingGradesFunc();
     });
@@ -47,7 +47,7 @@ $( document ).ready(function() {
     var PassGrade = params.get("PassGrade");
     if(PassGrade != "undefined" && PassGrade != null && PassGrade.length > 0)
         $("#id_grade_item_gradepass").val(PassGrade);
-    chrome.storage.sync.get('AutoGenerateCategories_Checkbox_Value', function(data) {
+    chrome.storage.local.get('AutoGenerateCategories_Checkbox_Value', function(data) {
         AutoGenerateCategories = data.AutoGenerateCategories_Checkbox_Value;
         if(AutoGenerateCategories === true){
             $("#id_submitbutton").click();
