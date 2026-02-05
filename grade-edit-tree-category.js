@@ -31,6 +31,8 @@ $( document ).ready(function() {
     var ID = params.get("ID");
     if(ID != "undefined" && ID != null && ID.length > 0)
         $("#id_grade_item_idnumber").val(ID);
+    if(ID != "undefined" && ID != null && ID.length > 0)
+        $("#grade_item_itemname").val(ID);
     var Name = params.get("Name");
     if(Name != "undefined" && Name != null && Name.length > 0)
         $("#id_fullname").val(Name);
