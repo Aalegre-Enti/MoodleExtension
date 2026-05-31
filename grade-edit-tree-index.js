@@ -9,15 +9,16 @@ $( document ).ready(function() {
         LoadSettings();
         $(categoriesHeaders).each(function(i){
             var lastcol = $(this).parents("tr").find("td").last().find(".dropdown");
-            $('<button class="btn btn-sm btn-outline-success" type="button" >Add</button>').appendTo(lastcol).on( "click", function(e) {
+            $('<button class="btn btn-sm btn-success px-2" type="button" title="Add children category" >+</button>').prependTo(lastcol).on( "click", function(e) {
                 AddByRow($(e.target).parents("tr"), "", "", "", "", "");
             } );
-            $('<button class="btn btn-sm btn-outline-danger" type="button" >Delete</button>').appendTo(lastcol).on( "click", function(e) {
+            $('<a class="btn btn-sm btn-secondary px-1" title="Edit category" href="' + GetEditCategoryURL($(this).parents("tr")) + '" >🖉</a>').prependTo(lastcol);
+            $('<button class="btn btn-sm btn-danger px-2" title="Delete category" type="button" >-</button>').prependTo(lastcol).on( "click", function(e) {
                 DeleteByRow($(e.target).parents("tr"));
             } );
         });
         $(categoriesFooters).each(function(i){
-            $('<button class="btn btn-sm btn-outline-secondary" type="button" >Edit Calc</button>').appendTo(this).on( "click", function(e) {
+            $('<button class="btn btn-sm btn-secondary px-1" type="button" title="Edit calculation" >⛭</button>').prependTo(this).on( "click", function(e) {
                 document.location = $(this).parent().find('a.dropdown-item:contains("Edit calculation")').attr("href");
             } );
         });
@@ -196,10 +197,22 @@ function AddByRow(element, id, name, maxGrade, minGrade, gradePass){
     var parentname = $(element).find(".rowtitle").clone().children().remove().end().text();
     AddCategory(parentname,id,name,maxGrade,minGrade,gradePass);
 }
-function AddCategory(parentname, id, name, maxGrade, minGrade, gradePass){
+function EditCategory(element){
+    document.location = GetEditCategoryURL(element); 
+}
+function GetEditCategoryURL(element){
     var params = new URLSearchParams(document.location.search);
     var courseid = params.get("id");
-    document.location = "category.php?courseid=" + courseid + "&Parent=" + parentname + "&ID=" + id + "&Name=" + name + "&MaxGrade=" + maxGrade + "&MinGrade=" + minGrade + "&GradePass=" + gradePass; 
+    var categoryid = element.attr('id').replace("grade-item-cg", "");
+    return "category.php?courseid=" + courseid + "&id=" + categoryid; 
+}
+function AddCategory(parentname, id, name, maxGrade, minGrade, gradePass){
+    document.location = GetAddCategoryURL(parentname, id, name, maxGrade, minGrade, gradePass); 
+}
+function GetAddCategoryURL(parentname, id, name, maxGrade, minGrade, gradePass){
+    var params = new URLSearchParams(document.location.search);
+    var courseid = params.get("id");
+    return "category.php?courseid=" + courseid + "&Parent=" + parentname + "&ID=" + id + "&Name=" + name + "&MaxGrade=" + maxGrade + "&MinGrade=" + minGrade + "&GradePass=" + gradePass; 
 }
 function DeleteByRow(element){
     var deletebutton = $(element).find("a.dropdown-item:contains('Delete')");
