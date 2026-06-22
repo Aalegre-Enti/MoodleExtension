@@ -12,6 +12,12 @@
   ],
   "content_scripts": [
     {
+      "js": ["jquery.min.js","common.js"],
+      "matches": [
+        "https://campus.enti.cat/*"
+      ]
+    },
+    {
       "js": ["jquery.min.js","grade-edit-tree-index.js", "data.js"],
       "matches": [
         "https://campus.enti.cat/grade/edit/tree/index.php*"
