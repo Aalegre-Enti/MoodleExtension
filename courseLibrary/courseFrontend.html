@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Frontend</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="p-2">
+        <div class="spinner-border" role="status" id="loadingSpinner">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+        <span class="badge text-bg-secondary" id="loadingInfo">Some tasks are running in the background...</span>
+        <span class="badge text-bg-success d-none" id="seemsOkayInfo">All seems in order </span>
+        <span class="badge text-bg-danger d-none" id="generalSettingsMoodleCodeError">Moodle Code not found</span>
+        <span class="badge text-bg-danger d-none" id="generalSettingsMoodleIsNotInEnglish">Moodle is not set to english language</span>
+        <span class="badge text-bg-warning d-none" id="generalSettingsCourseNameWarning">Course Name not filled</span>
+        <span class="badge text-bg-danger d-none" id="ordinaryActivitiesTotalError">The ordinary activities total is not 100%</span>
+        <span class="badge text-bg-danger d-none" id="extraordinaryActivitiesTotalError">The extraordinary activities total is not 100%</span>
+        <span class="badge text-bg-warning d-none" id="extraordinaryActivitiesTotalWarning">Some of the extraordinary activities are not associated to a ordinary activity</span>
+    </div>
+    <div class="accordion">
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
+                General Settings
+            </button>
+            </h2>
+            <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show">
+            <div class="accordion-body">
+                
+                <div class="input-group mb-3">
+                    <div class="form-floating">
+                        <input type="text" class="form-control" id="generalSettingsMoodleCode" placeholder="Moodle Code">
+                        <label for="generalSettingsMoodleCode">Moodle Code</label>
+                    </div>
+                    <div class="form-floating">
+                        <input type="text" class="form-control" id="generalSettingsCourseCode" placeholder="Course Code">
+                        <label for="generalSettingsCourseCode">Course Code</label>
+                    </div>
+                    <div class="form-floating">
+                        <input type="text" class="form-control" id="generalSettingsCourseName" placeholder="Course Name">
+                        <label for="generalSettingsCourseName">Course Name</label>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="false" aria-controls="panelsStayOpen-collapseTwo">
+                Ordinary Activities
+            </button>
+            </h2>
+            <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse">
+            <div class="accordion-body">
+                <strong>This is the second item’s accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It’s also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+            </div>
+            </div>
+        </div>
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseThree" aria-expanded="false" aria-controls="panelsStayOpen-collapseThree">
+                Extraordinary Activities
+            </button>
+            </h2>
+            <div id="panelsStayOpen-collapseThree" class="accordion-collapse collapse">
+            <div class="accordion-body">
+                <strong>This is the third item’s accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It’s also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+            </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
